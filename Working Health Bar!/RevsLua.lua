@@ -366,8 +366,6 @@ local default_config = {
 
   --Testing for npc health with esp code--
   npcEspHealthCB = false;
-  ---????---
-  npcEspHealthD = 0;
   ----------------------------------------
 
   --Testing for npc Armor with esp code--
