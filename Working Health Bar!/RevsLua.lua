@@ -539,7 +539,7 @@ end)
 --[ESP SECTION]--
 ESPTab:add_imgui(function()
   npcEspTab()
-  npcEspHealthAndArmor()
+  npcEspUpcomingFeatures()
 end)
 
 local npcEspCB = readFromConfig("npcEspCB")
@@ -549,6 +549,10 @@ local npcEspTracerCB = readFromConfig("npcEspTracerCB")
 local npcEspDistance = readFromConfig("npcEspDistance")
 local npcEspColor = readFromConfig("npcEspColor")
 
+-- Added Esp ColorByDistance ComboBox --
+local npcEspColorByDistanceCB = readFromConfig("npcEspColorByDistanceCB")
+-----------------------------------------
+
 -- Health Added Code --
 local npcEspHealthCB = readFromConfig("npcEspHealthCB")
 ----------------------
@@ -557,9 +561,6 @@ local npcEspHealthCB = readFromConfig("npcEspHealthCB")
 local npcEspArmorCB = readFromConfig("npcEspArmorCB")
 ----------------------
 
--- Added Esp ColorByDistance ComboBox --
-local npcEspColorByDistanceCB = readFromConfig("npcEspColorByDistanceCB")
------------------------------------------
 
 function npcEspTab()
   npcEspCB, npcEspToggled = HSCheckbox("NPC ESP", npcEspCB, "npcEspCB")
@@ -576,6 +577,15 @@ function npcEspTab()
   if ImGui.IsItemHovered() then
     ImGui.SetTooltip("Toggle On/Off Boxes around NPC's")
   end
+
+   -- Health Added Code --
+  ImGui.Indent();  
+  npcEspHealthCB, npcEspHealthToggled = HSCheckbox("Toggle NPC Health", npcEspHealthCB, "npcEspHealthCB")
+  ImGui.Unindent()
+  if ImGui.IsItemHovered() then
+    ImGui.SetTooltip("Toggling this will show you Health for NPC's|Requires NPC ESP Box Enabled!")
+  end
+  ----------------------
 
   npcEspTracerCB, npcEspTracerCBToggled = HSCheckbox("NPC ESP Tracer", npcEspTracerCB, "npcEspTracerCB")
   if ImGui.IsItemHovered() then
@@ -600,16 +610,10 @@ function npcEspTab()
   ImGui.Text("*Max distance has to be 100+ to work")
 end
 
--- [NPC HEALTH / ARMOR Function] --
-function npcEspHealthAndArmor()
+-- [NPC Upcoming Features] --
+function npcEspUpcomingFeatures()
   ImGui.Separator()
   ImGui.Text("Features below are Coming Soon!")
-  -- Health Added Code --
-  npcEspHealthCB, npcEspHealthToggled = HSCheckbox("Toggle NPC Health", npcEspHealthCB, "npcEspHealthCB")
-  if ImGui.IsItemHovered() then
-    ImGui.SetTooltip("Toggling this will show you Health for NPC's")
-  end
-  ----------------------
 
   -- Armor Added Code --
   npcEspArmorCB, npcEspArmorToggled = HSCheckbox("Toggle Armor", npcEspArmorCB, "npcEspArmorCB")
@@ -618,7 +622,7 @@ function npcEspHealthAndArmor()
   end
   ----------------------
 end
--- [End of NPC HEALTH / ARMOR Function] --
+-- [End of NPC Upcoming Features] --
 
 
 function calculate_distance(x1, y1, z1, x2, y2, z2)
