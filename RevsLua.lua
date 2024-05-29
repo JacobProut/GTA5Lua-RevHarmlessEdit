@@ -538,53 +538,6 @@ end)
 --[End of Enemy Tab Section]--
 
 
-
---[TEST COLOR ESP]--
--- Define a function to calculate the color based on distance
-function calculate_color(distance)
-    local redDistance = 50
-    local yellowDistance = 75
-    local cyanDistance = 100
-
-    local redColor = {1, 0, 0, 1}  -- Red
-    local yellowColor = {1, 1, 0, 1}  -- Yellow
-    local cyanColor = {0, 1, 1, 1}  -- Cyan
-
-    local color
-
-    if distance <= redDistance then
-        color = redColor
-    elseif distance <= yellowDistance then
-        local t = (distance - redDistance) / (yellowDistance - redDistance)
-        color = {
-            redColor[1] + (yellowColor[1] - redColor[1]) * t,
-            redColor[2] + (yellowColor[2] - redColor[2]) * t,
-            redColor[3] + (yellowColor[3] - redColor[3]) * t,
-            1
-        }
-    elseif distance <= cyanDistance then
-        local t = (distance - yellowDistance) / (cyanDistance - yellowDistance)
-        color = {
-            yellowColor[1] + (cyanColor[1] - yellowColor[1]) * t,
-            yellowColor[2] + (cyanColor[2] - yellowColor[2]) * t,
-            yellowColor[3] + (cyanColor[3] - yellowColor[3]) * t,
-            1
-        }
-    else
-        color = cyanColor
-    end
-
-    return color
-end
-
-
-function draw_rect(x, y, width, height, color)
-    GRAPHICS.DRAW_RECT(x, y, width, height, math.floor(color[1] * 255), math.floor(color[2] * 255), math.floor(color[3] * 255), math.floor(color[4] * 255), false)
-end
-
-
---[End of TEST COLOR ESP]--
-
 --[ESP SECTION]--
 ESPTab:add_imgui(function()
   npcEspTab()
@@ -675,12 +628,53 @@ function calculate_distance(x1, y1, z1, x2, y2, z2)
   return math.sqrt((x2 - x1) ^ 2 + (y2 - y1) ^ 2 + (z2 - z1) ^ 2)
 end
 
---[Old Draw_rect Function?]--
+--Function to calculate the color based on distance--
+function calculate_color(distance)
+    local redDistance = 50
+    local yellowDistance = 75
+    local cyanDistance = 100
+
+    local redColor = {1, 0, 0, 1}  -- Red
+    local yellowColor = {1, 1, 0, 1}  -- Yellow
+    local cyanColor = {0, 1, 1, 1}  -- Cyan
+
+    local color
+
+    if distance <= redDistance then
+        color = redColor
+    elseif distance <= yellowDistance then
+        local t = (distance - redDistance) / (yellowDistance - redDistance)
+        color = {
+            redColor[1] + (yellowColor[1] - redColor[1]) * t,
+            redColor[2] + (yellowColor[2] - redColor[2]) * t,
+            redColor[3] + (yellowColor[3] - redColor[3]) * t,
+            1
+        }
+    elseif distance <= cyanDistance then
+        local t = (distance - yellowDistance) / (cyanDistance - yellowDistance)
+        color = {
+            yellowColor[1] + (cyanColor[1] - yellowColor[1]) * t,
+            yellowColor[2] + (cyanColor[2] - yellowColor[2]) * t,
+            yellowColor[3] + (cyanColor[3] - yellowColor[3]) * t,
+            1
+        }
+    else
+        color = cyanColor
+    end
+
+    return color
+end
+
+
+--Function to draw Colored Rectangle based on "distance"--
+function draw_rect(x, y, width, height, color)
+    GRAPHICS.DRAW_RECT(x, y, width, height, math.floor(color[1] * 255), math.floor(color[2] * 255), math.floor(color[3] * 255), math.floor(color[4] * 255), false)
+end
+
+--Function to draw Red Rectangle--
 function draw_redrect(x, y, width, height)
   GRAPHICS.DRAW_RECT(x, y, width, height, math.floor(npcEspColor[1] * 255), math.floor(npcEspColor[2] * 255), math.floor(npcEspColor[3] * 255), math.floor(npcEspColor[4] * 255), false)
 end
-
---[End of old draw_rect function]--
 
 --MAY NEED TO MAKE ANOTHER SCRIPT FOR HEALTH/ARMOR IF I CANT MAKE IT WORK IN HERE--
 script.register_looped("HS NPC ESP Loop", function(npcEspLoop)

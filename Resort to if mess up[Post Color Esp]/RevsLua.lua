@@ -373,6 +373,9 @@ local default_config = {
   --Testing for npc Armor with esp code--
   npcEspArmorCB = false;
   ---------------------------------------
+  --Added Esp ColorByDistance ComboBox--
+  npcEspColorByDistanceCB = false; 
+--------------------------------------
 
   --User Movement Section--
   walkCB = false,
@@ -535,9 +538,6 @@ end)
 --[End of Enemy Tab Section]--
 
 
-
-
-
 --[ESP SECTION]--
 ESPTab:add_imgui(function()
   npcEspTab()
@@ -558,6 +558,10 @@ local npcEspHealthCB = readFromConfig("npcEspHealthCB")
 --Armor Added Code--
 local npcEspArmorCB = readFromConfig("npcEspArmorCB")
 --------------------
+
+--Added Esp ColorByDistance ComboBox--
+local npcEspColorByDistanceCB = readFromConfig("npcEspColorByDistanceCB")
+--------------------------------------
 
 function npcEspTab()
   npcEspCB, npcEspToggled = HSCheckbox("NPC ESP", npcEspCB, "npcEspCB")
@@ -589,6 +593,13 @@ function npcEspTab()
   if ImGui.IsItemHovered() then
     ImGui.SetTooltip("Change the color of NPC ESP")
     end
+
+  npcEspColorByDistanceCB, npcEspColorByDistanceToggled = HSCheckbox("ESP Color Change By Distance*", npcEspColorByDistanceCB, "npcEspColorByDistanceCB")
+  if ImGui.IsItemHovered() then
+    ImGui.SetTooltip("Color changes based on distance! <50:Red, >50<100:Yellow, <100:Cyan")
+    end
+  
+    ImGui.Text("*Max distance has to be 100+ to work")
 end
 
 --[NPC HEALTH / ARMOR Function]--
@@ -617,68 +628,115 @@ function calculate_distance(x1, y1, z1, x2, y2, z2)
   return math.sqrt((x2 - x1) ^ 2 + (y2 - y1) ^ 2 + (z2 - z1) ^ 2)
 end
 
-function draw_rect(x, y, width, height)
+--Function to calculate the color based on distance--
+function calculate_color(distance)
+    local redDistance = 50
+    local yellowDistance = 75
+    local cyanDistance = 100
+
+    local redColor = {1, 0, 0, 1}  -- Red
+    local yellowColor = {1, 1, 0, 1}  -- Yellow
+    local cyanColor = {0, 1, 1, 1}  -- Cyan
+
+    local color
+
+    if distance <= redDistance then
+        color = redColor
+    elseif distance <= yellowDistance then
+        local t = (distance - redDistance) / (yellowDistance - redDistance)
+        color = {
+            redColor[1] + (yellowColor[1] - redColor[1]) * t,
+            redColor[2] + (yellowColor[2] - redColor[2]) * t,
+            redColor[3] + (yellowColor[3] - redColor[3]) * t,
+            1
+        }
+    elseif distance <= cyanDistance then
+        local t = (distance - yellowDistance) / (cyanDistance - yellowDistance)
+        color = {
+            yellowColor[1] + (cyanColor[1] - yellowColor[1]) * t,
+            yellowColor[2] + (cyanColor[2] - yellowColor[2]) * t,
+            yellowColor[3] + (cyanColor[3] - yellowColor[3]) * t,
+            1
+        }
+    else
+        color = cyanColor
+    end
+
+    return color
+end
+
+
+--Function to draw Colored Rectangle based on "distance"--
+function draw_rect(x, y, width, height, color)
+    GRAPHICS.DRAW_RECT(x, y, width, height, math.floor(color[1] * 255), math.floor(color[2] * 255), math.floor(color[3] * 255), math.floor(color[4] * 255), false)
+end
+
+--Function to draw Red Rectangle--
+function draw_redrect(x, y, width, height)
   GRAPHICS.DRAW_RECT(x, y, width, height, math.floor(npcEspColor[1] * 255), math.floor(npcEspColor[2] * 255), math.floor(npcEspColor[3] * 255), math.floor(npcEspColor[4] * 255), false)
 end
 
 --MAY NEED TO MAKE ANOTHER SCRIPT FOR HEALTH/ARMOR IF I CANT MAKE IT WORK IN HERE--
 script.register_looped("HS NPC ESP Loop", function(npcEspLoop)
-  if npcEspCB then
-    local player = PLAYER.PLAYER_PED_ID()
-    local playerCoords = ENTITY.GET_ENTITY_COORDS(player, true)
-    local allPeds = entities.get_all_peds_as_handles()
-    for i, ped in ipairs(allPeds) do
-      if ENTITY.DOES_ENTITY_EXIST(ped) and not PED.IS_PED_A_PLAYER(ped) and PED.IS_PED_HUMAN(ped) and not PED.IS_PED_DEAD_OR_DYING(ped, true) then
-        local pedCoords = ENTITY.GET_ENTITY_COORDS(ped, true)
-        
-        HSConsoleLogDebug("Found ped " .. ped .. " at coordinates " .. tostring(pedCoords))
-        local distance = SYSTEM.VDIST(playerCoords.x, playerCoords.y, playerCoords.z, pedCoords.x, pedCoords.y, pedCoords.z)
-        if distance <= npcEspDistance then
-          local pedEnemy = PED.IS_PED_IN_COMBAT(ped, player)
-          if pedEnemy then
-            HSConsoleLogDebug("Ped is an enemy: " .. tostring(pedEnemy))
-          end
-          local success, screenX, screenY = GRAPHICS.GET_SCREEN_COORD_FROM_WORLD_COORD(pedCoords.x, pedCoords.y, pedCoords.z, 0.0, 0.0)
-          HSConsoleLogDebug("Screen coords: " .. tostring(screenX) .. ", " .. tostring(screenY))
-          if success and npcEspBoxCB and (not npcEspShowEnemiesCB or pedEnemy) then
-            -- Calculate the distance from the ped to the camera
-            local camCoords = CAM.GET_GAMEPLAY_CAM_COORD()
-            HSConsoleLogDebug("Camera coords: " .. tostring(camCoords))
-            local distanceToCam = calculate_distance(pedCoords.x, pedCoords.y, pedCoords.z, camCoords.x, camCoords.y, camCoords.z)
-            HSConsoleLogDebug("Distance to ped " .. ped .. " is " .. distanceToCam)
+    if npcEspCB then
+        local player = PLAYER.PLAYER_PED_ID()
+        local playerCoords = ENTITY.GET_ENTITY_COORDS(player, true)
+        local allPeds = entities.get_all_peds_as_handles()
+        for i, ped in ipairs(allPeds) do
+            if ENTITY.DOES_ENTITY_EXIST(ped) and not PED.IS_PED_A_PLAYER(ped) and PED.IS_PED_HUMAN(ped) and not PED.IS_PED_DEAD_OR_DYING(ped, true) then
+                local pedCoords = ENTITY.GET_ENTITY_COORDS(ped, true)
+                local distance = SYSTEM.VDIST(playerCoords.x, playerCoords.y, playerCoords.z, pedCoords.x, pedCoords.y, pedCoords.z)
+                if distance <= npcEspDistance then
+                    local pedEnemy = PED.IS_PED_IN_COMBAT(ped, player)
+                    local success, screenX, screenY = GRAPHICS.GET_SCREEN_COORD_FROM_WORLD_COORD(pedCoords.x, pedCoords.y, pedCoords.z, 0.0, 0.0)
+                    if success and npcEspBoxCB and (not npcEspShowEnemiesCB or pedEnemy) then
+                        local camCoords = CAM.GET_GAMEPLAY_CAM_COORD()
+                        local distanceToCam = calculate_distance(pedCoords.x, pedCoords.y, pedCoords.z, camCoords.x, camCoords.y, camCoords.z)
 
-            -- Size of the box based on the distance to the camera
-            local boxSize = 2 * (1 / distanceToCam)
+                        -- Size of the box based on the distance to the camera
+                        local boxSize = 2 * (1 / distanceToCam)
 
-            -- Minimum box thickness
-            local minThickness = 0.001
+                        -- Minimum box thickness
+                        local minThickness = 0.001
 
-            -- Thickness of the outline based on the distance to the camera, with a lower limit
-            local thickness = math.max(minThickness, 0.0015 * (1 / distanceToCam))
-            HSConsoleLogDebug("Box thickness: " .. thickness)
+                        -- Thickness of the outline based on the distance to the camera, with a lower limit
+                        local thickness = math.max(minThickness, 0.0015 * (1 / distanceToCam))
 
-            -- Call the functions to draw the box
-            draw_rect(screenX, screenY - boxSize / 2  + 0.001, boxSize / 4, thickness) -- Top
-            draw_rect(screenX, screenY + boxSize / 2  - 0.001, boxSize / 4, thickness) -- Bottom
-            draw_rect(screenX - boxSize / 8, screenY, thickness, boxSize - 2 * thickness) -- Left
-            draw_rect(screenX + boxSize / 8, screenY, thickness, boxSize - 2 * thickness) -- Right
-          end
-          -- Draw a line from the player to the NPC if the tracer is enabled
-          if success and npcEspTracerCB then
-            GRAPHICS.DRAW_LINE(playerCoords.x, playerCoords.y, playerCoords.z, pedCoords.x, pedCoords.y, pedCoords.z, math.floor(npcEspColor[1] * 255), math.floor(npcEspColor[2] * 255), math.floor(npcEspColor[3] * 255), math.floor(npcEspColor[4] * 255))
-          end
+                        -- Call the functions to draw the box
+                        draw_redrect(screenX, screenY - boxSize / 2  + 0.001, boxSize / 4, thickness) -- Top
+                        draw_redrect(screenX, screenY + boxSize / 2  - 0.001, boxSize / 4, thickness) -- Bottom
+                        draw_redrect(screenX - boxSize / 8, screenY, thickness, boxSize - 2 * thickness) -- Left
+                        draw_redrect(screenX + boxSize / 8, screenY, thickness, boxSize - 2 * thickness) -- Right
+                    end
 
-          --Attempt at npc Health--
-          if success and npcEspHealthCB then
-           
+                    if success and npcEspTracerCB and (not npcEspShowEnemiesCB or pedEnemy) then
+                        GRAPHICS.DRAW_LINE(playerCoords.x, playerCoords.y, playerCoords.z, pedCoords.x, pedCoords.y, pedCoords.z, math.floor(npcEspColor[1] * 255), math.floor(npcEspColor[2] * 255), math.floor(npcEspColor[3] * 255), math.floor(npcEspColor[4] * 255))
+                    end
+
+                    if success and npcEspColorByDistanceCB and (npcEspBoxCB or npcEspTracerCB) and (not npcEspShowEnemiesCB or pedEnemy) then
+                        local color = calculate_color(distance)
+                        if npcEspTracerCB then
+                            GRAPHICS.DRAW_LINE(playerCoords.x, playerCoords.y, playerCoords.z, pedCoords.x, pedCoords.y, pedCoords.z, math.floor(color[1] * 255), math.floor(color[2] * 255), math.floor(color[3] * 255), math.floor(color[4] * 255))
+                        end
+                        if npcEspBoxCB then
+                            local camCoords = CAM.GET_GAMEPLAY_CAM_COORD()
+                            local distanceToCam = calculate_distance(pedCoords.x, pedCoords.y, pedCoords.z, camCoords.x, camCoords.y, camCoords.z)
+                            local boxSize = 2 * (1 / distanceToCam)
+                            local minThickness = 0.001
+                            local thickness = math.max(minThickness, 0.0015 * (1 / distanceToCam))
+                            draw_rect(screenX, screenY - boxSize / 2 + 0.001, boxSize / 4, thickness, color) -- Top
+                            draw_rect(screenX, screenY + boxSize / 2 - 0.001, boxSize / 4, thickness, color) -- Bottom
+                            draw_rect(screenX - boxSize / 8, screenY, thickness, boxSize - 2 * thickness, color) -- Left
+                            draw_rect(screenX + boxSize / 8, screenY, thickness, boxSize - 2 * thickness, color) -- Right
+                        end
+                    end
+                end
             end
-         ---------------------------
         end
-      end
     end
-  end
 end)
 --[End of ESP]--
+
 
 --[Start of 'User' Tab]--
 UserTab:add_imgui(function()
