@@ -1,16 +1,22 @@
 Unlock more propertys for more garages
 
 vehicle Settings
-	- Return Personal Vehicle to Storage
+	- Return Personal Vehicle to Storage?
 	- Honk for speed boost? Toggle-able w/Speed Slider?
 	
 ESP
 	- Display health
+		X Create a working health bar [Green Line]
+		- Line up Health Line with Bottom Line of ESP Box
+		
 	- Display Armor
+		- Display a light blue line under Health Line
+		
 	X |COMPELETED| Toggle-able "Change ESP Color with distance" Check-Box
-		X Red close
-		X yellow medium
-		X cyan far
+		X Red-close
+		X yellow-medium
+		X cyan-far
+		X Work with "Show only enemies"
 	
 Movement
 	- Jump height with moving slider
