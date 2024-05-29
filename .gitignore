@@ -361,3 +361,8 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Updated Esp with colors[Still need to fix show only enemies with color when enabled]/RevsLua.lua
+/Working color ESP [Needs code cleanup still]/RevsLua.lua
+/Resort to if mess up[Pre NPC-Health]/RevsLua.lua
+/Resort to if mess up[Pre NPC-Health]/RevsLua.lua
+/Resort to if mess up[Pre NPC-Health]/RevsLua.lua
