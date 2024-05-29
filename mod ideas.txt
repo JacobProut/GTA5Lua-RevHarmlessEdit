@@ -1,0 +1,20 @@
+Unlock more propertys for more garages
+
+vehicle Settings
+	- Return Personal Vehicle to Storage
+	- Honk for speed boost? Toggle-able w/Speed Slider?
+	
+ESP
+	- Display health
+	- Display Armor
+	- Toggle-able "Change ESP Color with distance" Check-Box
+		- Red close
+		- yellow medium
+		- cyan far
+	
+Movement
+	- Jump height with moving slider
+	
+
+
+FIX SHOW ONLY ENEMIES ESP OPTION
