@@ -683,11 +683,17 @@ end
 
 -- Function to draw Health Line under NPC --
 function draw_health_line(x, y, width, healthPercentage, color)
-  local lineLength = width * healthPercentage -- Scale the length based on health percentage (0 to 1)
-  local lineWidth = 0.005  
-  GRAPHICS.DRAW_LINE(x - lineLength / 2, y, x + lineLength / 2, y, math.floor(color[1] * 255), math.floor(color[2] * 255), math.floor(color[3] * 255), math.floor(color[4] * 255))
-  -- Draw a rectangle to represent the health bar
-  GRAPHICS.DRAW_RECT(x - lineLength / 2, y - lineWidth / 2, lineLength, lineWidth, math.floor(color[1] * 255), math.floor(color[2] * 255), math.floor(color[3] * 255), math.floor(color[4] * 255), false)
+    local lineLength = width * healthPercentage -- Scale the length based on health percentage (0 to 1)
+    local lineWidth = 0.005  -- Width of the health bar line
+    
+    -- Shift the start point of the line to align with the left edge of the box
+    local startX = x - (lineLength / 25)
+    
+    -- Draw the health bar line
+    GRAPHICS.DRAW_LINE(startX, y, startX + lineLength, y, math.floor(color[1] * 255), math.floor(color[2] * 255), math.floor(color[3] * 255), math.floor(color[4] * 255))
+    
+    -- Draw a rectangle to represent the health bar
+    GRAPHICS.DRAW_RECT(startX, y - lineWidth / 2, lineLength, lineWidth, math.floor(color[1] * 255), math.floor(color[2] * 255), math.floor(color[3] * 255), math.floor(color[4] * 255), false)
 end
 
 -- Register looped script for NPC ESP --
