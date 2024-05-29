@@ -8,6 +8,8 @@ ESP
 	- Display health
 		X Create a working health bar [Green Line]
 		- Line up Health Line with Bottom Line of ESP Box
+		- Make Health bar Yellow when npc is hurt
+		- Make it so more of the health bar disappears when npc is hurt
 		
 	- Display Armor
 		- Display a light blue line under Health Line

@@ -678,7 +678,7 @@ end
 
 -- Function to calculate the health percentage --
 function calculate_health_percentage(currentHealth, maxHealth)
-    return currentHealth / maxHealth
+    return currentHealth / maxHealth 
 end
 
 -- Function to draw Health Line under NPC --
@@ -688,7 +688,16 @@ function draw_health_line(x, y, width, healthPercentage, color)
     
     -- Shift the start point of the line to align with the left edge of the box
     local startX = x - (lineLength / 25)
+
+     -- Change the color to yellow if health percentage is below a threshold
+    if healthPercentage < 1.0 and healthPercentage >= 0.7 then
+        color = {1, 1, 0, 1}  -- Yellow color
+    elseif healthPercentage <= 0.7 then
+        color = {1, 0, 0, 1}  -- Red color
+    end
     
+    
+
     -- Draw the health bar line
     GRAPHICS.DRAW_LINE(startX, y, startX + lineLength, y, math.floor(color[1] * 255), math.floor(color[2] * 255), math.floor(color[3] * 255), math.floor(color[4] * 255))
     
@@ -730,13 +739,11 @@ script.register_looped("HS NPC ESP Loop", function(npcEspLoop)
                             draw_redrect(screenX + boxSize / 8, screenY, thickness, boxSize - 2 * thickness) -- Right
 
                             if npcEspHealthCB then
-                                local maxHealth = ENTITY.GET_ENTITY_MAX_HEALTH(ped)
-                                local currentHealth = ENTITY.GET_ENTITY_HEALTH(ped)
-                                local healthPercentage = currentHealth / maxHealth
-                                local healthLineY = screenY + boxSize / 2 + thickness + 0.005 
-                                print("Drawing health line for NPC: ", ped)
-                                print("Health Percentage: ", healthPercentage)
-                               -- draw_health_line(screenX, screenY + 0.02, healthPercentage, {0, 1, 0, 1}) -- Green line
+                               local maxHealth = ENTITY.GET_ENTITY_MAX_HEALTH(ped)
+                               local currentHealth = ENTITY.GET_ENTITY_HEALTH(ped)
+                               --local healthPercentage = currentHealth / maxHealth
+                               local healthPercentage = calculate_health_percentage(currentHealth, maxHealth)
+                               local healthLineY = screenY + boxSize / 2 + thickness + 0.005 
                                draw_health_line(screenX, healthLineY, boxSize / 4, healthPercentage, {0, 1, 0, 1}) -- Green line
                             end
                         end
