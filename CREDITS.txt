@@ -1,0 +1,4 @@
+A lot of the original code was taken from Harmless's GTA lua
+Thank you Harmless for the code, it has helped me a lot with reverse engineering lua scripts!
+
+https://github.com/YimMenu-Lua/Harmless-Scripts

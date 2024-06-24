@@ -20,6 +20,7 @@ RHSEnemy = RHSTab:add_tab("Enemy Options")
 ESPTab = RHSEnemy:add_tab("NPC ESP")
 TeleportTab = RHSTab:add_tab("Teleport Options")
 HeistTab = RHSTab:add_tab("Heist Editor")
+ComputerTab = RHSTab:add_tab("Computer Section")
 --[End of Menu Tabs Section]--
 
 
@@ -501,7 +502,7 @@ end
 
 --[Main Tab Section]--
 RHSTab:add_imgui(function()
-  ImGui.Text("Version: 1.0")
+  ImGui.Text("Version: 1.5")
   ImGui.Text("Harmless's 'Github:")
   ImGui.SameLine(); ImGui.TextColored(0.8, 0.9, 1, 1, "YimMenu-Lua/Harmless-Scripts")
   if ImGui.IsItemHovered() and ImGui.IsItemClicked(0) then
@@ -510,16 +511,23 @@ RHSTab:add_imgui(function()
     HSConsoleLogInfo("Copied https://github.com/YimMenu-Lua/Harmless-Scripts to clipboard!")
   end
   HSshowTooltip("Click to copy to clipboard")
+  
+  ImGui.Text("Rev's Github:")
+  ImGui.SameLine(); ImGui.TextColored(0.8, 0.9, 1, 1, "https://github.com/JacobProut/GTA5Lua-RevHarmlessEdit")
+
+  ImGui.Text("Alestarov's Github'")
+  ImGui.SameLine(); ImGui.TextColored(0.8, 0.9, 1, 1, "https://github.com/YimMenu-Lua/Alestarov-Menu")
+
   ImGui.Separator()
   if ImGui.Button("Changelog") then
-    ImGui.OpenPopup("  Version 1.0")
+    ImGui.OpenPopup("  Version 1.5")
   end
-  if ImGui.BeginPopupModal("  Version 1.0", true, ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize) then
+  if ImGui.BeginPopupModal("  Version 1.5", true, ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize) then
     local centerX, centerY = GetScreenCenter()
     ImGui.SetWindowPos(centerX - 300, centerY - 200)
     ImGui.SetWindowSize(300, 200)
-    ImGui.Text("Version: 1.0 Rev-Harmless Edit")
-    ImGui.TextWrapped("First Attempt at Updating the ESP")
+    ImGui.Text("Version: 1.5 Rev-Harmless Edit")
+    ImGui.TextWrapped("Colored Npc Esp, Npc Health Bar, Added Heist Editor, Added Computer System network. Heist and computer system code was taken from @Alestarov")
     ImGui.EndPopup()
   end
   ImGui.Separator()
@@ -1285,6 +1293,111 @@ CayoH:add_button("TP out to the sea", function()
 
 --[End of Heist Tab]--
 
+--[Start of Computer Tab]--
+-- Computer Section was Taken from @Alestarov --
+ComputerTab:add_text("Works properly in session by invitations. in an open session does not work well")
+
+ComputerTab:add_button("Show Master Control Computer", function()
+    local playerIndex = globals.get_int(1574918)
+    if globals.get_int(1895156+playerIndex*609+10+429+1) == 0 then
+        run_script("apparcadebusinesshub")
+    else
+        if globals.get_int(1895156+playerIndex*609+10+429+1) == 1 then
+            run_script("apparcadebusinesshub")
+        else
+                gui.show_message("Don't forget to register as CEO/Leader")
+                run_script("apparcadebusinesshub")
+        end
+    end
+ end)
+
+ ComputerTab:add_button("Show Nightclub Computer", function()
+    local playerIndex = globals.get_int(1574918)
+    if globals.get_int(1895156+playerIndex*609+10+429+1) == 0 then
+        run_script("appbusinesshub")
+    else
+        if globals.get_int(1895156+playerIndex*609+10+429+1) == 1 then
+            run_script("appbusinesshub")
+        else
+                gui.show_message("Don't forget to register as CEO/Leader")
+                run_script("appbusinesshub")
+        end
+    end
+end)
+
+ComputerTab:add_button("Show Office Computer", function()
+    local playerIndex = globals.get_int(1574918)
+    if globals.get_int(1895156+playerIndex*609+10+429+1) == 0 then
+        run_script("appfixersecurity")
+    else
+        if globals.get_int(1895156+playerIndex*609+10+429+1) == 1 then
+            globals.set_int(1895156+playerIndex*609+10+429+1,0)
+            gui.show_message("prompt","Converted to CEO")
+            run_script("appfixersecurity")
+            else
+            gui.show_message("Don't forget to register as CEO/Leader","It may also be a script detection error, known problem, no feedback required")
+            run_script("appfixersecurity")
+        end
+    end
+end)
+
+ComputerTab:add_button("Show Bunker Computer", function()
+    local playerIndex = globals.get_int(1574918)
+    if globals.get_int(1895156+playerIndex*609+10+429+1) == 0 then
+        run_script("appbunkerbusiness")
+    else
+        if globals.get_int(1895156+playerIndex*609+10+429+1) == 1 then
+            run_script("appbunkerbusiness")
+            else
+                gui.show_message("Don't forget to register as CEO/Leader","It may also be a script detection error, known problem, no feedback required")
+                run_script("appbunkerbusiness")
+            end
+    end
+end)
+
+ComputerTab:add_button("Show Hangar Computer", function()
+    local playerIndex = globals.get_int(1574918)
+    if globals.get_int(1895156+playerIndex*609+10+429+1) == 0 then
+        run_script("appsmuggler")
+    else
+        if globals.get_int(1895156+playerIndex*609+10+429+1) == 1 then
+            run_script("appsmuggler")
+            else
+                gui.show_message("Don't forget to register as CEO/Leader","It may also be a script detection error, known problem, no feedback required")
+                run_script("appsmuggler")
+            end
+    end
+end)
+
+ComputerTab:add_button("Show the Terrorist Dashboard", function()
+    local playerIndex = globals.get_int(1574918)
+    if globals.get_int(1895156+playerIndex*609+10+429+1) == 0 then
+        run_script("apphackertruck")
+    else
+        if globals.get_int(1895156+playerIndex*609+10+429+1) == 1 then
+            run_script("apphackertruck")
+        else
+            gui.show_message("Don't forget to register as CEO/Leader","It may also be a script detection error, known problem, no feedback required")
+            run_script("apphackertruck")
+        end
+    end
+end)
+
+ComputerTab:add_button("Show Avengers Panel", function()
+    local playerIndex = globals.get_int(1574918)
+    if globals.get_int(1895156+playerIndex*609+10+429+1) == 0 then
+        run_script("appAvengerOperations")
+    else
+        if globals.get_int(1895156+playerIndex*609+10+429+1) == 1 then
+            run_script("appAvengerOperations")
+        else
+            gui.show_message("Don't forget to register as CEO/Leader","It may also be a script detection error, known problem, no feedback required")
+            run_script("appAvengerOperations")
+        end
+    end
+end)
+--[End of Computer Tab]--
+
 
 --!!!!!!!!!!NEED TO FIX!!!!!!!!!--
 --[ToolTips for hovered text in menus]--
@@ -1470,3 +1583,11 @@ end
 --[End of Utility Functions]--
 
 
+function run_script(name) --start script thread
+    script.run_in_fiber(function (runscript)
+        SCRIPT.REQUEST_SCRIPT(name)  
+        repeat runscript:yield() until SCRIPT.HAS_SCRIPT_LOADED(name)
+        SYSTEM.START_NEW_SCRIPT(name, 5000)
+        SCRIPT.SET_SCRIPT_AS_NO_LONGER_NEEDED(name)
+    end)
+end
