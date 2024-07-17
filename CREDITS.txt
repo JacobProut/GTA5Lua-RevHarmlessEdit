@@ -1,4 +1,13 @@
 A lot of the original code was taken from Harmless's GTA lua
+If it wasn't for me looking into harmless's script, i would've never started modding GTA, so thank you to harmless and everyone on this list!
 Thank you Harmless for the code, it has helped me a lot with reverse engineering lua scripts!
-
 https://github.com/YimMenu-Lua/Harmless-Scripts
+
+
+Thank you to Alestarov for providing code that helped me better understand heist-editing & computer-management-system.
+https://github.com/YimMenu-Lua/Alestarov-Menu
+
+
+
+Thank you for providing useful code that has helped me develop a better understanding for player cuts for heists
+https://github.com/Deadlineem/Extras-Addon-for-YimMenu

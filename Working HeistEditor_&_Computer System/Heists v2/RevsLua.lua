@@ -502,7 +502,7 @@ end
 
 --[Main Tab Section]--
 RHSTab:add_imgui(function()
-  ImGui.Text("Version: 1.6")
+  ImGui.Text("Version: 1.5")
   ImGui.Text("Harmless's 'Github:")
   ImGui.SameLine(); ImGui.TextColored(0.8, 0.9, 1, 1, "YimMenu-Lua/Harmless-Scripts")
   if ImGui.IsItemHovered() and ImGui.IsItemClicked(0) then
@@ -518,19 +518,16 @@ RHSTab:add_imgui(function()
   ImGui.Text("Alestarov's Github'")
   ImGui.SameLine(); ImGui.TextColored(0.8, 0.9, 1, 1, "https://github.com/YimMenu-Lua/Alestarov-Menu")
 
-  ImGui.Text("Deadlineem's Github'")
-  ImGui.SameLine(); ImGui.TextColored(0.8, 0.9, 1, 1, "https://github.com/Deadlineem/Extras-Addon-for-YimMenu")
-
   ImGui.Separator()
   if ImGui.Button("Changelog") then
-    ImGui.OpenPopup("  Version 1.6")
+    ImGui.OpenPopup("  Version 1.5")
   end
-  if ImGui.BeginPopupModal("  Version 1.6", true, ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize) then
+  if ImGui.BeginPopupModal("  Version 1.5", true, ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize) then
     local centerX, centerY = GetScreenCenter()
     ImGui.SetWindowPos(centerX - 300, centerY - 200)
     ImGui.SetWindowSize(300, 200)
-    ImGui.Text("Version: 1.6 Rev-Harmless Edit")
-    ImGui.TextWrapped("Colored Npc Esp, Npc Health Bar, Added Heist Editor, Added Computer System network. Heist and computer system code was taken from @Alestarov. Heist-Cuts for cayo provided by @Deadlineem")
+    ImGui.Text("Version: 1.5 Rev-Harmless Edit")
+    ImGui.TextWrapped("Colored Npc Esp, Npc Health Bar, Added Heist Editor, Added Computer System network. Heist and computer system code was taken from @Alestarov")
     ImGui.EndPopup()
   end
   ImGui.Separator()
@@ -1297,8 +1294,6 @@ end)
 
 CayoH:add_separator()
 
---Taken from Deadlineem's Extra-Addon-for-YimMenu
--- https://github.com/Deadlineem/Extras-Addon-for-YimMenu
 CayoH:add_text("---[Cut Percentages]---")
 CPCg1 = 1971648 + 831 + 56 + 1 -- cayo perico player 1 cut global
 CPCg2 = 1971648 + 831 + 56 + 2 -- cayo perico player 2 cut global
