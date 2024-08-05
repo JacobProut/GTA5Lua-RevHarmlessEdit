@@ -1,0 +1,9 @@
+969.44, -4.17, 80.52= Where you park bug van outside casino
+
+2466.75, -278.38, -70.69 = first key card swipe outside vault
+
+2490.33, -239.04 -55.12	= Outside Agatha office
+
+2525.36, -279.21, -70.64 = Elevator to upstairs
+							
+2547.96, -275.43, -58.72 = Teleport to exit of building

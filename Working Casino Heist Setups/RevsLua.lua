@@ -502,7 +502,7 @@ end
 
 --[Main Tab Section]--
 RHSTab:add_imgui(function()
-  ImGui.Text("Version: 1.5")
+  ImGui.Text("Version: 1.6")
   ImGui.Text("Harmless's 'Github:")
   ImGui.SameLine(); ImGui.TextColored(0.8, 0.9, 1, 1, "YimMenu-Lua/Harmless-Scripts")
   if ImGui.IsItemHovered() and ImGui.IsItemClicked(0) then
@@ -518,16 +518,19 @@ RHSTab:add_imgui(function()
   ImGui.Text("Alestarov's Github'")
   ImGui.SameLine(); ImGui.TextColored(0.8, 0.9, 1, 1, "https://github.com/YimMenu-Lua/Alestarov-Menu")
 
+  ImGui.Text("Deadlineem's Github'")
+  ImGui.SameLine(); ImGui.TextColored(0.8, 0.9, 1, 1, "https://github.com/Deadlineem/Extras-Addon-for-YimMenu")
+
   ImGui.Separator()
   if ImGui.Button("Changelog") then
-    ImGui.OpenPopup("  Version 1.5")
+    ImGui.OpenPopup("  Version 1.6")
   end
-  if ImGui.BeginPopupModal("  Version 1.5", true, ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize) then
+  if ImGui.BeginPopupModal("  Version 1.6", true, ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize) then
     local centerX, centerY = GetScreenCenter()
     ImGui.SetWindowPos(centerX - 300, centerY - 200)
     ImGui.SetWindowSize(300, 200)
-    ImGui.Text("Version: 1.5 Rev-Harmless Edit")
-    ImGui.TextWrapped("Colored Npc Esp, Npc Health Bar, Added Heist Editor, Added Computer System network. Heist and computer system code was taken from @Alestarov")
+    ImGui.Text("Version: 1.6 Rev-Harmless Edit")
+    ImGui.TextWrapped("Colored Npc Esp, Npc Health Bar, Added Heist Editor, Added Computer System network. Heist and computer system code was taken from @Alestarov. Heist-Cuts for cayo provided by @Deadlineem")
     ImGui.EndPopup()
   end
   ImGui.Separator()
@@ -1084,7 +1087,8 @@ end)
 --[End of Teleport Options Tab]--
 
 --[Start of Heist Tab]--
--- Heist Section was Taken from @Alestarov --
+--[Start of Cayo Heist]--
+-- Cayo Heist Section was Taken from @Alestarov --
 -- Reworked and added some code --
 
 CayoH = HeistTab:add_tab("Cayo Perico Heist")
@@ -1167,7 +1171,7 @@ CayoH:add_button("Setup SOLO Pink Diamond", function()
         gui.show_message("[Cayo Heist]", "Reset the board to see the changes")
 end)
 
-CayoH:add_button("Setup TEAM Pink Diamond", function()
+CayoH:add_button("Setup DUO Pink Diamond", function()
     PlayerIndex = globals.get_int(1574918)
 	if PlayerIndex == 0 then
 		mpx = "MP0_"
@@ -1207,6 +1211,56 @@ CayoH:add_button("Setup TEAM Pink Diamond", function()
         STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_COKE_I_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_COKE_C_SCOPED"), 0, true)
         STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_GOLD_I_SCOPED"), -1, true) -- Set all gold scoped
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_GOLD_C_SCOPED"), 0, true) -- Set all gold scoped(COMPOUND?)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_PAINT_SCOPED"), 0, true)  -- paintings scoped
+
+        STATS.STAT_SET_INT(joaat(mpx .. "H4_MISSIONS"), 65535, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4_PLAYTHROUGH_STATUS"), 32, true)
+
+        gui.show_message("[Cayo Heist]", "Team Pink Diamond Mode has been set up")
+        gui.show_message("[Cayo Heist]", "Reset the board to see the changes")
+end)
+
+CayoH:add_button("Setup TEAM Pink Diamond", function()
+    PlayerIndex = globals.get_int(1574918)
+	if PlayerIndex == 0 then
+		mpx = "MP0_"
+	else
+		mpx = "MP1_"
+	end
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_BS_GEN"), 131071, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_BS_ENTR"), 63, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_BS_ABIL"), 63, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_WEAPONS"), 5, true)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_WEP_DISRP"), 3, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_ARM_DISRP"), 3, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_HEL_DISRP"), 3, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_TARGET"), 3, true) -- Change this to 3 for Pink Diamond
+		STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_TROJAN"), 2, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4CNF_APPROACH"), -1, true)
+
+        -- Island Loot // -1 shows all, 0 shows none
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_CASH_I"), 0, true)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_WEED_I"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_COKE_I"), -1, true) -- Set all Coke Outside Compound
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_GOLD_I"), 0, true) -- Set all gold
+
+        -- Compound Loot // -1 shows all, 0 shows none
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_CASH_C"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_WEED_C"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_COKE_C"), 0, true)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_GOLD_C"), 0, true) -- Set all gold (COMPOUND?)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_PAINT"), 0, true) -- paintings
+        STATS.STAT_SET_INT(joaat(mpx .. "H4_PROGRESS"), 126823, true)
+
+        -- These are what is set when you find loot throughout the island/compound
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_CASH_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_CASH_C_SCOPED"), 0, true)
+		STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_WEED_I_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_WEED_C_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_COKE_I_SCOPED"), -1, true) -- Set all Coke scoped Outside Compound
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_COKE_C_SCOPED"), 0, true)
+        STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_GOLD_I_SCOPED"), 0, true) -- Set all gold scoped
         STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_GOLD_C_SCOPED"), 0, true) -- Set all gold scoped(COMPOUND?)
 		STATS.STAT_SET_INT(joaat(mpx .. "H4LOOT_PAINT_SCOPED"), 0, true)  -- paintings scoped
 
@@ -1294,7 +1348,14 @@ end)
 
 CayoH:add_separator()
 
+--Taken from Deadlineem's Extra-Addon-for-YimMenu
+-- https://github.com/Deadlineem/Extras-Addon-for-YimMenu
 CayoH:add_text("---[Cut Percentages]---")
+CayoH:add_button("100 to all",
+function ()
+	CutsPresetter(CPCg1, CPCg4, 100)
+end
+)
 CPCg1 = 1971648 + 831 + 56 + 1 -- cayo perico player 1 cut global
 CPCg2 = 1971648 + 831 + 56 + 2 -- cayo perico player 2 cut global
 CPCg3 = 1971648 + 831 + 56 + 3 -- cayo perico player 3 cut global
@@ -1315,7 +1376,7 @@ end)
 
 CayoH:add_separator()
 
-CayoH:add_text("---[Remove Camera/Hoplites Section]---")
+CayoH:add_text("---[Remove Section]---")
 
 CayoH:add_button("Remove all cameras", function()
     for _, ent in pairs(entities.get_all_objects_as_handles()) do
@@ -1356,6 +1417,16 @@ CayoH:add_button("Remove Perico hoplites", function()
     end
 end)
 
+CayoH:add_button("Delete Mission NPC's", function() -- Thanks to RazorGamerX for the help on this
+	for index, ped in ipairs(entities.get_all_peds_as_handles()) do 
+		local model = ENTITY.GET_ENTITY_MODEL(ped)
+		if model == 0x7ED5AD78 or model == 0x6C8C08E5 or model == 0x995B3F9F or model == 0xB881AEE then 
+				ENTITY.SET_ENTITY_AS_MISSION_ENTITY(ped, true, true)
+				PED.DELETE_PED(ped)
+		end
+	end
+end)
+
 CayoH:add_separator()
 
 CayoH:add_text("---[Quick Teleports]---")
@@ -1364,6 +1435,18 @@ CayoH:add_text("Start with Entrance")
 CayoH:add_button("TP to the entrance", function()
             PED.SET_PED_COORDS_KEEP_VEHICLE(PLAYER.PLAYER_PED_ID(), 5048.157, -5821.616, -12.726)
         end)
+
+CayoH:add_separator()
+CayoH:add_text("Teleport to Steps by Main Building in compound")
+CayoH:add_button("TP to Steps", function()
+           PED.SET_PED_COORDS_KEEP_VEHICLE(PLAYER.PLAYER_PED_ID(), 4999, -5751, 20) 
+        end)
+CayoH:add_text("OR")
+CayoH:add_text("Teleport to Office")
+CayoH:add_button("TP into Office", function()
+            PED.SET_PED_COORDS_KEEP_VEHICLE(PLAYER.PLAYER_PED_ID(), 5009.92, -5751.88, 28.25) 
+        end)
+CayoH:add_separator()
 
 CayoH:add_text("After opening entrance, teleport to storage")
 CayoH:add_button("TP into the storage", function()
@@ -1380,8 +1463,138 @@ CayoH:add_button("TP out to the sea", function()
             PED.SET_PED_COORDS_KEEP_VEHICLE(PLAYER.PLAYER_PED_ID(), 4200.177, -5625.261, -2.69)
         end)
 
+--[END of Cayo Heist]--
+
+
+
+--[Start of Diamond Heist]--
+CasinoH = HeistTab:add_tab("Diamond Casino Heist")
+-- This script sets all Diamond Casino Heist setups as completed
+local function complete_diamond_heist_setups()
+    local PlayerIndex = globals.get_int(1574918)
+    local mpx = PlayerIndex == 0 and "MP0_" or "MP1_"
+
+    STATS.STAT_SET_INT(joaat(mpx .. "H3_COMPLETEDPOSIX"), -1, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_APPROACH"), 2, true)  -- Aggressive
+    STATS.STAT_SET_INT(joaat(mpx .. "H3_LAST_APPROACH"), 2, true)  -- Aggressive
+    STATS.STAT_SET_INT(joaat(mpx .. "H3_HARD_APPROACH"), 2, true)  -- Aggressive
+
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_TARGET"), 3, true)  -- Diamonds
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_POI"), 1023, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_ACCESSPOINTS"), 2047, true)
+    
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWWEAP"), 5, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWDRIVER"), 3, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWHACKER"), 4, true)
+    
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_VEHS"), 3, true)  -- Best vehicles
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_WEAPS"), 1, true)  -- Best weapons
+    
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_DISRUPTSHIP"), 3, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_BODYARMORLVL"), 2, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_KEYCARDS"), 1, true)
+
+    -- Set exit disguise to NOOSE gear
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_DISGUISE"), 5, true)
+
+     -- Set security pass to level 2
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_KEYLEVELS"), 2, true)
+
+    -- Set support crew cuts to 0%
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWWEAPCUT"), 0, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWDRIVERCUT"), 0, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWHACKERCUT"), 0, true)
+    
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_BITSET1"), -1, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_BITSET0"), 0xFFFF, true)
+    
+    gui.show_message("[Diamond Casino Heist]", "All setups have been marked as completed")
+    gui.show_message("[Diamond Casino Heist]", "Reset the board to see the changes")
+end
+
+-- Add a button to YimMenu to execute the function
+CasinoH:add_button("Complete All Diamond Heist Setups", complete_diamond_heist_setups)
+
+-- This script adds a button to YimMenu that resets the Diamond Casino Heist to its default settings
+
+local function reset_diamond_heist_to_default()
+    local PlayerIndex = globals.get_int(1574918)
+    local mpx = PlayerIndex == 0 and "MP0_" or "MP1_"
+
+    -- Reset Diamond Casino Heist stats to default values
+    STATS.STAT_SET_INT(joaat(mpx .. "H3_COMPLETEDPOSIX"), 0, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_APPROACH"), 0, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3_LAST_APPROACH"), 0, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3_HARD_APPROACH"), 0, true)
+
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_TARGET"), 0, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_POI"), 0, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_ACCESSPOINTS"), 0, true)
+    
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWWEAP"), 0, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWDRIVER"), 0, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWHACKER"), 0, true)
+    
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_VEHS"), 0, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_WEAPS"), 0, true)
+    
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_DISRUPTSHIP"), 0, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_BODYARMORLVL"), 0, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_KEYCARDS"), 0, true)
+
+    -- Reset exit disguise
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_DISGUISE"), 0, true)
+    
+    -- Reset security pass
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_KEYLEVELS"), 0, true)
+    
+    -- Reset support crew cuts
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWWEAPCUT"), 0, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWDRIVERCUT"), 0, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWHACKERCUT"), 0, true)
+    
+    -- Reset player cut percentages
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_P1_CUT"), 0, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_P2_CUT"), 0, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_P3_CUT"), 0, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_P4_CUT"), 0, true)
+
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_BITSET1"), 0, true)
+    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_BITSET0"), 0, true)
+    
+    gui.show_message("[Diamond Casino Heist]", "The Diamond Casino Heist has been reset to default settings.")
+end
+
+-- Add a button to YimMenu to execute the function
+CasinoH:add_button("Reset Diamond Casino Heist Setups to Default", reset_diamond_heist_to_default)
+
+CasinoH:add_separator()
+
+
+
+DCCg1 = 1964849 + 1497 + 736 + 92 + 1 -- diamond casino player 1 cut global
+DCCg2 = 1964849 + 1497 + 736 + 92 + 2 -- diamond casino player 2 cut global
+DCCg3 = 1964849 + 1497 + 736 + 92 + 3 -- diamond casino player 3 cut global
+DCCg4 = 1964849 + 1497 + 736 + 92 + 4 -- diamond casino player 4 cut global
+
+local casinoCut1 = CasinoH:add_input_int("Cut 1")
+local casinoCut2 = CasinoH:add_input_int("Cut 2")
+local casinoCut3 = CasinoH:add_input_int("Cut 3")
+local casinoCut4 = CasinoH:add_input_int("Cut 4")
+
+CasinoH:add_button("Set",
+function ()
+    globals.set_int(DCCg1, casinoCut1:get_value())
+	globals.set_int(DCCg2, casinoCut2:get_value())
+	globals.set_int(DCCg3, casinoCut3:get_value())
+	globals.set_int(DCCg4, casinoCut4:get_value())
+end)
+--[End of Diamond Heist]--
 
 --[End of Heist Tab]--
+
+
+
 
 --[Start of Computer Tab]--
 -- Computer Section was Taken from @Alestarov --
@@ -1684,116 +1897,3 @@ end
 
 
 -----------------------
-
-CasinoH = HeistTab:add_tab("Dianmond Casino Heist")
--- This script sets all Diamond Casino Heist setups as completed
-local function complete_diamond_heist_setups()
-    local PlayerIndex = globals.get_int(1574918)
-    local mpx = PlayerIndex == 0 and "MP0_" or "MP1_"
-
-    STATS.STAT_SET_INT(joaat(mpx .. "H3_COMPLETEDPOSIX"), -1, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_APPROACH"), 2, true)  -- Aggressive
-    STATS.STAT_SET_INT(joaat(mpx .. "H3_LAST_APPROACH"), 2, true)  -- Aggressive
-    STATS.STAT_SET_INT(joaat(mpx .. "H3_HARD_APPROACH"), 2, true)  -- Aggressive
-
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_TARGET"), 3, true)  -- Diamonds
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_POI"), 1023, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_ACCESSPOINTS"), 2047, true)
-    
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWWEAP"), 5, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWDRIVER"), 3, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWHACKER"), 4, true)
-    
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_VEHS"), 3, true)  -- Best vehicles
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_WEAPS"), 1, true)  -- Best weapons
-    
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_DISRUPTSHIP"), 3, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_BODYARMORLVL"), 2, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_KEYCARDS"), 1, true)
-
-    -- Set exit disguise to NOOSE gear
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_DISGUISE"), 5, true)
-
-     -- Set security pass to level 2
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_KEYLEVELS"), 2, true)
-
-    -- Set support crew cuts to 0%
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWWEAPCUT"), 0, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWDRIVERCUT"), 0, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWHACKERCUT"), 0, true)
-    
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_BITSET1"), -1, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_BITSET0"), 0xFFFF, true)
-    
-    gui.show_message("[Diamond Casino Heist]", "All setups have been marked as completed")
-    gui.show_message("[Diamond Casino Heist]", "Reset the board to see the changes")
-end
-
--- Add a button to YimMenu to execute the function
-CasinoH:add_button("Complete All Diamond Heist Setups", complete_diamond_heist_setups)
-
--- This script adds a button to YimMenu that resets the Diamond Casino Heist to its default settings
-
-local function reset_diamond_heist_to_default()
-    local PlayerIndex = globals.get_int(1574918)
-    local mpx = PlayerIndex == 0 and "MP0_" or "MP1_"
-
-    -- Reset Diamond Casino Heist stats to default values
-    STATS.STAT_SET_INT(joaat(mpx .. "H3_COMPLETEDPOSIX"), 0, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_APPROACH"), 0, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3_LAST_APPROACH"), 0, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3_HARD_APPROACH"), 0, true)
-
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_TARGET"), 0, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_POI"), 0, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_ACCESSPOINTS"), 0, true)
-    
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWWEAP"), 0, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWDRIVER"), 0, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWHACKER"), 0, true)
-    
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_VEHS"), 0, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_WEAPS"), 0, true)
-    
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_DISRUPTSHIP"), 0, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_BODYARMORLVL"), 0, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_KEYCARDS"), 0, true)
-
-    -- Reset exit disguise
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_DISGUISE"), 0, true)
-    
-    -- Reset security pass
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_KEYLEVELS"), 0, true)
-    
-    -- Reset support crew cuts
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWWEAPCUT"), 0, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWDRIVERCUT"), 0, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_CREWHACKERCUT"), 0, true)
-    
-    -- Reset player cut percentages
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_P1_CUT"), 0, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_P2_CUT"), 0, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_P3_CUT"), 0, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_P4_CUT"), 0, true)
-
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_BITSET1"), 0, true)
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_BITSET0"), 0, true)
-    
-    gui.show_message("[Diamond Casino Heist]", "The Diamond Casino Heist has been reset to default settings.")
-end
-
--- Add a button to YimMenu to execute the function
-CasinoH:add_button("Reset Diamond Casino Heist Setups to Default", reset_diamond_heist_to_default)
-
-CasinoH:add_separator()
-
-
-local function set_player_cuts_to_100()
-   -- Set player cut percentages
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_P1_CUT"), 100, true)  -- Player 1 (you) cut to 100%
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_P2_CUT"), 100, true)    -- Player 2 cut to 100%
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_P3_CUT"), 100, true)    -- Player 3 cut to 100%
-    STATS.STAT_SET_INT(joaat(mpx .. "H3OPT_P4_CUT"), 100, true)    -- Player 4 cut to 100%
-   end
-
-CasinoH:add_button("Set All Cuts to 100", set_player_cuts_to_100)
