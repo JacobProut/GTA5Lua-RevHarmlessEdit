@@ -1,8 +1,8 @@
 Unlock more propertys for more garages
 
 vehicle Settings
-	- Return Personal Vehicle to Storage?
-	- Honk for speed boost? Toggle-able w/Speed Slider?
+	• Return Personal Vehicle to Storage?
+	• Honk for speed boost? Toggle-able w/Speed Slider?
 	
 ESP
 	- Display health
@@ -10,11 +10,11 @@ ESP
 		- Line up Health Line with Bottom Line of ESP Box
 		X Make Health bar Yellow when npc is hurt
 			X Red When Npc is badly hurt
-		- Make it so more of the health bar disappears when npc is hurt
-		- May need to fix it so hurt SWAT box esp shows up when they're down
+		• Make it so more of the health bar disappears when npc is hurt
+		• May need to fix it so hurt SWAT box esp shows up when they're down
 		
-	- Display Armor
-		- Display a light blue line under Health Line
+	• Display Armor
+		• Display a light blue line under Health Line
 		
 	X |COMPELETED| Toggle-able "Change ESP Color with distance" Check-Box
 		X Red-close
@@ -23,10 +23,22 @@ ESP
 		X Work with "Show only enemies"
 	
 Movement
-	- Jump height with moving slider
+	• Jump height with moving slider
 	
 	casino drill / key pad skip
 	
+
+Casino Heist
+	• MUTE LESTERS BITCH ASS
+	• Spawn Baller LE (Armored) in casino menu
+	• No collison for diamond heist menu
 	
-MUTE LESTERS BITCH ASS
+Cayo
+	• 100 to 2 players
+	• 100 to 3 players
 	
+Nightclub teleports
+	X -1578.68, -3013.51, -79.01 = Bar
+	X -1630.29, -3002.44, -78.14 = Docking Bay
+	X -1617.97, -3015.61, -75.21 = Safe
+	X -1611.66, -3013.75, -79.01 = Bathroom
